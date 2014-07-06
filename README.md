@@ -1,5 +1,5 @@
 ###Protocol
-- Send UTF-8 encoded JSON to straw.imyoyo.net:8282 (UDP)
+- Send UTF-8 encoded JSON to straw.imyoyo.net:8282  (UDP)
 - JSON example: 
 ```javascript
 {
