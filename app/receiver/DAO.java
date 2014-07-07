@@ -8,7 +8,9 @@ import java.util.Map;
 
 public class DAO {
 
-    // TODO db.raw.ensureIndex({time:1}); 근데 언제 날리지?? 그리고 그룹에도 인덱스 걸어야하는데?
+    static {
+        getRawCollection().createIndex(new BasicDBObject("time",1));
+    }
 
     public static final String TEST_GROUP = "ce3bd840-f0a7-11e3-ac10-0800200c9a66";
 
@@ -50,7 +52,6 @@ public class DAO {
     }
 
     public static Map<String, Map<Long, Double>> getRawsBetween(String groupKey, long startTime, long endTime) {
-        // TODO add index on time
         BasicDBObject query = new BasicDBObject();
         query.append("groupKey", new BasicDBObject("$eq", groupKey));
         query.append("time", new BasicDBObject("$gte", startTime).append("$lt", endTime));
