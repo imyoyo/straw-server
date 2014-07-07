@@ -35,10 +35,22 @@ public class RawDataUdpServer {
 
     protected static void processData(String jsonString, long time) {
         JsonNode root = Json.parse(jsonString);
-        String groupKey = root.get("groupKey").asText();
-        double cpu = root.get("cpuUsage").get("total").asDouble();
-        String id = root.get("machineId").asText();
-        DAO.insertRaw(groupKey, id, time, cpu);
+        String groupKey = getSubMode(root, "groupKey").asText();
+        String id = getSubMode(root, "machineId").asText();
+        if(root.has("cpuUsage")) {
+            double cpu = getSubMode(getSubMode(root, "cpuUsage"), "total").asDouble();
+            DAO.insertRaw(groupKey, id, time, cpu);
+        }
+        if(root.has("disk")) {
+            // TODO 처리하기.
+        }
+    }
+
+    private static JsonNode getSubMode(JsonNode root, String key) {
+        JsonNode nullable = root.get(key);
+        if(nullable == null)
+            throw new RuntimeException("not exist key: " + key);
+        return nullable;
     }
 
 }
