@@ -17,7 +17,7 @@
                     var table = '<table><tr>';
                     $.each(v.cpu, function(i, v) {
                         var s;
-                        if(v)
+                        if(v != -1)
                             s = Math.round(v*100);
                         else
                             s = "?";

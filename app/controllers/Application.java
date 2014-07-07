@@ -27,6 +27,8 @@ public class Application extends Controller {
         ArrayList<Object> list = new ArrayList<>();
         for(String memberId : new TreeSet<String>(map.keySet())) {
             Double[] cpu = new Double[bucketSize];
+            for(int i=0;i<bucketSize;i++)
+                cpu[i] = -1.0;
             for(long time : map.get(memberId).keySet()) {
                 long bucketStartTime = time / 1000 * 1000;
                 int index = (bucketSize-1) - (int)(lastBucketStartTime - bucketStartTime) / 1000;
