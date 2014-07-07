@@ -1,9 +1,9 @@
 package receiver;
 
+import models.CpuUsage;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Map;
 
 public class RawDataUdpServerTest {
@@ -12,8 +12,8 @@ public class RawDataUdpServerTest {
         DAO.clearGroup("TEST_G");
         RawDataUdpServer.processData("{\"cpuUsage\":{\"unit\":[0.06,0.02], \"total\": 0.04},\"memoryUsage\":{\"max\":2147012608, \"current\":1287536640},\"groupKey\":\"TEST_G\",\"machineId\":\"my pc\"}", 10 * 1000);
         Thread.sleep(100);
-        Map<String, Map<Long, Double>> map = DAO.getRawsBetween("TEST_G", 0, 100 * 1000);
-        Assert.assertEquals(0.04, (Double)map.get("my pc").get(10*1000L), 0);
+        Map<String, Map<Long, CpuUsage>> map = DAO.getRawsBetween("TEST_G", 0, 100 * 1000);
+        Assert.assertEquals(0.04, (Double)map.get("my pc").get(10*1000L).getTotal(), 0);
     }
 
     @Test

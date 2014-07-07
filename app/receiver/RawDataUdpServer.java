@@ -1,9 +1,12 @@
 package receiver;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.CpuUsage;
 import org.slf4j.LoggerFactory;
 import play.libs.Json;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,8 +41,14 @@ public class RawDataUdpServer {
         String groupKey = getSubMode(root, "groupKey").asText();
         String id = getSubMode(root, "machineId").asText();
         if(root.has("cpuUsage")) {
-            double cpu = getSubMode(getSubMode(root, "cpuUsage"), "total").asDouble();
-            DAO.insertRaw(groupKey, id, time, cpu);
+		  JsonNode cpuNode = getSubMode(root, "cpuUsage");
+		  double total = getSubMode(cpuNode, "total").asDouble();
+
+		  JsonNode unitArray = getSubMode(cpuNode, "unit");
+		  List<Double> individual = new ArrayList<>();
+		  for(int i=0;i<unitArray.size();i++)
+			  individual.add(unitArray.get(i).asDouble());
+            DAO.insertRaw(groupKey, id, time, new CpuUsage(total, individual));
         }
         if(root.has("disk")) {
             // TODO 처리하기.

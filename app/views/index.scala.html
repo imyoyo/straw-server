@@ -25,6 +25,10 @@
                     });
                     table += "</tr></table>";
                     memberDiv.append(table);
+                    memberDiv.append("Core: ");
+                    var array = v.lastIndividual;
+                    for(var i in array)
+                        memberDiv.append(Math.round(array[i]*100) + "% ");
                     memberDiv.append("<p></p>");
                 });
             });
